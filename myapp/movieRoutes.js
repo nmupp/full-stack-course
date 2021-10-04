@@ -1,8 +1,11 @@
 const express = require('express')
 const router = express.Router()
+const Movie = require('./model/Movie')
 
 router.post('/', function postMovie(req, res) {
-    res.json({...req.body, id: 1})
+    const movie = new Movie(req.body.name)
+    //save to mongodb
+    res.json({...movie, id: 1})
   })
   
 router.put('/:id',(req, res) => {

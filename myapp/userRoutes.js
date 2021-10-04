@@ -1,8 +1,10 @@
 const express = require('express')
+const {User} = require('./model/User')
 const router = express.Router()
 
 router.post('/', function postUser(req, res) {
-    res.json({...req.body, id: 1})
+    const user = new User(req.body.name)
+    res.json({...user, id: 1})
   })
   
 router.put('/:id',(req, res) => {
