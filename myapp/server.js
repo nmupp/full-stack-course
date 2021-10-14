@@ -1,4 +1,5 @@
 const express = require('express')
+const mongoose = require('mongoose');
 const movieRoutes = require('./movieRoutes')
 const userRoutes = require('./userRoutes')
 const app = express()
@@ -15,6 +16,18 @@ app.use(express.json())
 app.use('/movies', movieRoutes)
 app.use('/users', userRoutes)
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+async function main() {
+  await mongoose.connect('mongodb://localhost:27017/test');
+}
+
+main()
+.then(() => {
+  console.log('Mongodb connected')
+  app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
+  })
 })
+.catch(err => {
+  console.err(err)
+})
+

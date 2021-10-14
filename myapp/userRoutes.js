@@ -4,6 +4,8 @@ const router = express.Router()
 
 router.post('/', function postUser(req, res) {
     const user = new User(req.body.name)
+    //save user to mongo db
+    
     res.json({...user, id: 1})
   })
   

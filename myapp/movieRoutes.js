@@ -2,18 +2,20 @@ const express = require('express')
 const router = express.Router()
 const Movie = require('./model/Movie')
 
-router.post('/', function postMovie(req, res) {
-    const movie = new Movie(req.body.name)
-    //save to mongodb
-    res.json({...movie, id: 1})
+router.post('/', async function postMovie(req, res) {
+    const movie = new Movie({name: req.body.name})
+    const saved = await movie.save()
+    res.json(saved)
   })
   
 router.put('/:id',(req, res) => {
     res.json({...req.body, id: req.params.id})
 })
 
-router.get('/',(req, res) => {
-    res.json([{id: 1, name: req.query.name}])
+router.get('/',async (req, res) => {
+    const movies = await Movie.find({name: req.query.name}).lean()
+    console.log('the movies', movies)
+    res.json(movies)
 })
 
 router.get('/:id',(req, res) => {
