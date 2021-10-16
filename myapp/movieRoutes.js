@@ -8,22 +8,28 @@ router.post('/', async function postMovie(req, res) {
     res.json(saved)
   })
   
-router.put('/:id',(req, res) => {
-    res.json({...req.body, id: req.params.id})
+router.put('/:id',async (req, res) => {
+    const id = req.params.id
+    const updated = await Movie.findByIdAndUpdate(id, {name: req.body.name}).lean()
+    res.json({...updated})
 })
 
 router.get('/',async (req, res) => {
-    const movies = await Movie.find({name: req.query.name}).lean()
+    const query = req.query?.name ? {name: req.query.name} : {}
+    const movies = await Movie.find(query).lean()
     console.log('the movies', movies)
     res.json(movies)
 })
 
-router.get('/:id',(req, res) => {
-    res.json({id: req.params.id})
+router.get('/:id',async (req, res) => {
+    const id = req.params.id
+    const data = await Movie.findById(id).lean()
+    res.json(data)
 })
 
-router.delete('/:id',(req, res) => {
-    res.json({id: req.params.id})
+router.delete('/:id',async (req, res) => {
+    const deleted = await Movie.findByIdAndDelete(req.params.id).lean()
+    res.json(deleted)
 })
 
 module.exports = router
